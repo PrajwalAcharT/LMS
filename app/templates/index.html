@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block stylesheet %}
+    {{ super() }}
+    <link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}
+    LMS - Home
+{% endblock title %}
+
+{% block content %}
+    <div class="hero-section text-center py-5 bg-primary text-white mb-5">
+        <h1>Welcome to Learning Management System</h1>
+        <p class="lead">Discover courses that match your interests and advance your career</p>
+    </div>
+
+    <div class="row mt-4">
+        {% for course in courses %}
+        <div class="col-md-4 mb-4">
+            <div class="card h-100">
+                <div class="course-thumbnail" style="background-image: url('{{ url_for('static', filename='img/' + course.thumbnail) if course.thumbnail else 'img/default.jpg' }}')">
+                    <span class="course-category">{{ course.category }}</span>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.description }}</p>
+                    <div class="course-stats">
+                        <span><i class="fas fa-users"></i> {{ course.enrollments|length }} students</span>
+                        <span><i class="fas fa-clock"></i> {{ course.sections|length }} sections</span>
+                    </div>
+                </div>
+                <div class="card-footer bg-white">
+                    <a href="{{ url_for('main.course', course_id=course.id) }}" class="btn btn-primary btn-block">View Course</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% from 'macro.html' import page_header %}
+
+{% block stylesheet %}
+    {{ super() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/course.css') }}" rel="stylesheet">
+{% endblock stylesheet %}
+
+{% block title %}
+    LMS - {{ course.title }}
+{% endblock title %}
+
+{% block content %}
+<div class="course-hero bg-primary p-5">
+    <div class="container py-5">
+        <h1 class="text-white">{{ course.title }}</h1>
+        <p class="text-light lead">{{ course.description }}</p>
+        <div class="course-meta text-light">
+            <span><i class="fas fa-user"></i> {{ course.instructor }}</span>
+            <span><i class="fas fa-clock"></i> {{ course.duration }}</span>
+            <span><i class="fas fa-star"></i> {{ course.rating }}/5.0</span>
+            <span><i class="fas fa-users"></i> {{ course.enrolled }} students</span>
+        </div>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="course-sections">
+                {% for section in course.sections %}
+                <div class="section-card mb-4">
+                    <h3>{{ section.title }}</h3>
+                    {% for lesson in section.lessons %}
+                    <div class="lesson-item">
+                        {% if lesson.type == 'video' %}
+                            <i class="fas fa-play-circle lesson-icon"></i>
+                        {% elif lesson.type == 'text' %}
+                            <i class="fas fa-file-alt lesson-icon"></i>
+                        {% else %}
+                            <i class="fas fa-question-circle lesson-icon"></i>
+                        {% endif %}
+                        <div class="lesson-info">
+                            <h5 class="mb-0">{{ lesson.title }}</h5>
+                            <small class="text-muted">{{ lesson.duration }}</small>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-body">
+                    <h4>Course Features</h4>
+                    <div class="course-features">
+                        {% for feature in course.features %}
+                            <span class="feature-badge">{{ feature }}</span>
+                        {% endfor %}
+                    </div>
+                    <button class="btn btn-primary btn-lg btn-block mt-4">Enroll Now</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block script %}
+    {{ super() }}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/course.js') }}"></script>
+{% endblock script %}
